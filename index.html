@@ -3,230 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marjoon's Special Gift</title>
-
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob: https://*.railway.app; img-src * data: blob:; media-src * data: blob:; worker-src blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob:; img-src * data: blob:; media-src * data: blob:; script-src * 'unsafe-inline' 'unsafe-eval';">
+    
+    <title>Marjoon Special Gift</title>
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000; overflow: hidden; font-family: 'Georgia', serif; user-select: none; }
-
-        /* 🎬 VIDEOLAR (FONDA) */
+        body { background: #000; overflow: hidden; font-family: sans-serif; }
+        
         .video-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-            z-index: 1; opacity: 0.3; pointer-events: none;
+            display: grid; grid-template-columns: 1fr 1fr; opacity: 0.3; z-index: 1;
         }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 📦 SOVG'A QUTISI (3D) */
         #box-container {
-            position: fixed; width: 150px; height: 150px;
+            position: absolute; width: 200px; height: 200px;
             z-index: 100; cursor: pointer;
-            will-change: left, top;
         }
 
-        /* 📸 RASMLAR STEKI */
         .photo-stack {
-            position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
-            width: 280px; height: 380px; display: none; z-index: 200;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 300px; height: 400px; display: none; z-index: 200;
         }
         .photo-wrapper {
             position: absolute; width: 100%; height: 100%;
-            transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
-            display: flex; flex-direction: column; align-items: center;
+            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: 0.5s; background-size: cover; background-position: center;
         }
-        .photo-card {
-            position: relative; width: 100%; height: 85%;
-            background-size: cover; background-position: center;
-            border: 10px solid #fff;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-        }
-        .view-btn {
-            position: absolute; bottom: 10px; right: 10px;
-            background: #fff; width: 35px; height: 35px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; cursor: pointer; z-index: 10; border: none;
-        }
-        .allah-text {
-            margin-top: 15px; font-size: 24px; color: #FFD700; font-weight: bold;
-            text-shadow: 0 0 10px gold; opacity: 0; transform: translateY(10px);
-            transition: 0.5s;
-        }
-        .active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
-
-        /* ✨ EFFEKTLAR */
-        .particle {
-            position: fixed; font-size: 24px; pointer-events: none; z-index: 3000;
-            animation: explode 1.2s ease-out forwards;
-        }
-        @keyframes explode {
-            0% { transform: translate(0,0) scale(0.5); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(1.5) rotate(var(--r)); opacity: 0; }
-        }
-
+        .fly { transform: translateY(-120vh) rotate(20deg) !important; opacity: 0; }
+        
         #final-msg {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; text-align: center; color: #FFD700; font-size: 26px;
-            z-index: 500; display: none; cursor: pointer; text-shadow: 0 0 15px gold;
-        }
-
-        /* Holat matni */
-        .status-hint { 
-            position: fixed; bottom: 30px; width: 100%; text-align: center; 
-            color: #fff; font-size: 14px; z-index: 50; opacity: 0.7; letter-spacing: 2px;
-        }
-
-        /* Rasm uchib ketishi */
-        .photo-wrapper.fly { transform: translateY(-120vh) rotate(30deg) !important; opacity: 0; }
-        
-        /* Kattalashtirish */
-        .zoom-active {
-            position: fixed !important; top: 50% !important; left: 50% !important;
-            width: 95vw !important; height: 85vh !important;
-            transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
+            color: gold; font-size: 24px; text-align: center; display: none; z-index: 300;
         }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
-    <audio id="click-sound"><source src="click.mp3" type="audio/mpeg"></audio>
+    <audio id="music" loop><source src="music.mp3"></audio>
 
     <div class="video-bg">
-        <video muted loop playsinline crossorigin="anonymous"><source src="vid1.mp4" type="video/mp4"></video>
-        <video muted loop playsinline crossorigin="anonymous"><source src="vid2.mp4" type="video/mp4"></video>
-        <video muted loop playsinline crossorigin="anonymous"><source src="vid3.mp4" type="video/mp4"></video>
-        <video muted loop playsinline crossorigin="anonymous"><source src="vid4.mp4" type="video/mp4"></video>
+        <video muted loop playsinline><source src="vid1.mp4"></video>
+        <video muted loop playsinline><source src="vid2.mp4"></video>
+        <video muted loop playsinline><source src="vid3.mp4"></video>
+        <video muted loop playsinline><source src="vid4.mp4"></video>
     </div>
 
     <div id="box-container">
         <model-viewer 
-            id="gift-3d" 
             src="model.glb" 
-            crossorigin="anonymous" 
-            loading="eager"
+            id="model"
             auto-rotate 
             shadow-intensity="1" 
+            loading="eager"
+            camera-controls
+            touch-action="none"
             style="width: 100%; height: 100%;">
         </model-viewer>
     </div>
 
-    <div class="photo-stack" id="p-stack">
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-        <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+    <div class="photo-stack" id="stack">
+        <div class="photo-wrapper" style="background-image:url('img1.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img2.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img3.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img4.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img5.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img6.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img7.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img8.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img9.jpg')"></div>
+        <div class="photo-wrapper" style="background-image:url('img10.jpg')"></div>
     </div>
 
     <div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
-    <div class="status-hint" id="hint">SOVG'ANI TUTING! 📦</div>
 
     <script>
-        const bgMusic = document.getElementById('bg-music');
-        const clickSound = document.getElementById('click-sound');
         const box = document.getElementById('box-container');
-        const pStack = document.getElementById('p-stack');
-        const finalMsg = document.getElementById('final-msg');
+        const stack = document.getElementById('stack');
+        const music = document.getElementById('music');
         const vids = document.querySelectorAll('video');
 
-        let caught = false;
-        let x = Math.random() * (window.innerWidth - 150);
-        let y = Math.random() * (window.innerHeight - 150);
-        let dx = 4, dy = 4;
-
-        // ❤️ Portlash effekti
-        function createHeart(cx, cy) {
-            for(let i=0; i<8; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.innerHTML = '❤️';
-                p.style.left = cx + 'px';
-                p.style.top = cy + 'px';
-                p.style.setProperty('--x', (Math.random()-0.5)*300 + 'px');
-                p.style.setProperty('--y', (Math.random()-0.5)*300 + 'px');
-                p.style.setProperty('--r', Math.random()*360 + 'deg');
-                document.body.appendChild(p);
-                setTimeout(() => p.remove(), 1200);
-            }
+        // Quti harakati
+        let x = 50, y = 50, dx = 2, dy = 2;
+        function move() {
+            if(box.style.display === 'none') return;
+            x += dx; y += dy;
+            if(x > window.innerWidth - 200 || x < 0) dx *= -1;
+            if(y > window.innerHeight - 200 || y < 0) dy *= -1;
+            box.style.left = x + 'px';
+            box.style.top = y + 'px';
+            requestAnimationFrame(move);
         }
+        move();
 
-        // 📦 Quti harakati
-        function animateBox() {
-            if (!caught) {
-                x += dx; y += dy;
-                if (x + 150 > window.innerWidth || x < 0) dx *= -1;
-                if (y + 150 > window.innerHeight || y < 0) dy *= -1;
-                box.style.left = x + 'px';
-                box.style.top = y + 'px';
-                requestAnimationFrame(animateBox);
-            }
-        }
-        animateBox();
-
-        // Birinchi klikda hamma narsani aktivlashtirish
-        document.body.addEventListener('click', function init() {
-            bgMusic.play().catch(() => {});
-            vids.forEach(v => v.play().catch(() => {}));
-            document.body.removeEventListener('click', init);
-        });
-
-        // Qutini tutish
-        box.onclick = (e) => {
-            e.stopPropagation();
-            caught = true;
-            clickSound.play();
-            createHeart(e.clientX, e.clientY);
-            
-            box.style.transition = "all 0.8s ease";
-            box.style.left = "50%"; box.style.top = "50%";
-            box.style.transform = "translate(-50%, -50%) scale(2)";
-            
-            setTimeout(() => {
-                box.style.opacity = "0";
-                pStack.style.display = "block";
-                document.getElementById('hint').style.display = "none";
-                setTimeout(() => box.style.display = "none", 500);
-            }, 1000);
+        // Qutini bosganda
+        box.onclick = () => {
+            music.play();
+            vids.forEach(v => v.play());
+            box.style.display = 'none';
+            stack.style.display = 'block';
         };
 
-        // Rasm steki bilan ishlash
-        pStack.onclick = (e) => {
-            const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
-            if (wrappers.length === 0) return;
-
-            const top = wrappers[wrappers.length - 1];
-            clickSound.currentTime = 0;
-            clickSound.play();
-            createHeart(e.clientX, e.clientY);
-
-            if (e.target.classList.contains('view-btn')) {
-                top.classList.toggle('zoom-active');
-                return;
+        // Rasmlarni bosganda
+        stack.onclick = () => {
+            const photos = stack.querySelectorAll('.photo-wrapper:not(.fly)');
+            if(photos.length > 0) {
+                photos[photos.length - 1].classList.add('fly');
             }
-
-            if (!top.classList.contains('zoom-active')) {
-                top.classList.add('fly');
-                if (wrappers.length > 1) {
-                    wrappers[wrappers.length - 2].classList.add('active-wrapper');
-                } else {
-                    setTimeout(() => {
-                        pStack.style.display = 'none';
-                        finalMsg.style.display = 'block';
-                    }, 600);
-                }
+            if(photos.length === 1) {
+                document.getElementById('final-msg').style.display = 'block';
             }
         };
-
-        finalMsg.onclick = () => location.reload();
     </script>
 </body>
 </html>
