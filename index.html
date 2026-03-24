@@ -3,118 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob:; img-src * data: blob:; media-src * data: blob:; script-src * 'unsafe-inline' 'unsafe-eval';">
-    
-    <title>Marjoon Special Gift</title>
-
+    <title>For You 💖</title>
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000; overflow: hidden; font-family: sans-serif; }
+        body { background: #000; overflow: hidden; font-family: 'Poppins', sans-serif; }
         
-        .video-bg {
+        /* Fon videolari */
+        .v-grid {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: grid; grid-template-columns: 1fr 1fr; opacity: 0.3; z-index: 1;
+            display: grid; grid-template-columns: 1fr 1fr; opacity: 0.35; z-index: 1;
         }
         video { width: 100%; height: 100%; object-fit: cover; }
 
+        /* 📦 3D Quti */
         #box-container {
-            position: absolute; width: 200px; height: 200px;
-            z-index: 100; cursor: pointer;
+            position: absolute; width: 180px; height: 180px;
+            z-index: 100; cursor: pointer; transition: transform 0.3s;
+        }
+        #box-container:active { transform: scale(0.9); }
+
+        /* 📸 Rasmlar */
+        .stack {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 280px; height: 380px; display: none; z-index: 200;
+        }
+        .img-card {
+            position: absolute; width: 100%; height: 100%;
+            border: 10px solid #fff; box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+            background-size: cover; background-position: center;
+            transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex; align-items: flex-end; justify-content: center;
+        }
+        .img-card span { margin-bottom: -40px; color: gold; font-weight: bold; font-size: 20px; text-shadow: 0 0 10px #000; opacity: 0; transition: 0.3s; }
+        .active-card span { opacity: 1; transform: translateY(-50px); }
+
+        .fly-away { transform: translateY(-120vh) rotate(35deg) scale(0.5) !important; opacity: 0; }
+
+        #msg {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            color: #FFD700; font-size: 22px; text-align: center; display: none; z-index: 300;
+            text-shadow: 0 0 20px orange; font-weight: bold; padding: 20px;
         }
 
-        .photo-stack {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 300px; height: 400px; display: none; z-index: 200;
-        }
-        .photo-wrapper {
-            position: absolute; width: 100%; height: 100%;
-            border: 10px solid white; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.5s; background-size: cover; background-position: center;
-        }
-        .fly { transform: translateY(-120vh) rotate(20deg) !important; opacity: 0; }
-        
-        #final-msg {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: gold; font-size: 24px; text-align: center; display: none; z-index: 300;
-        }
+        .hint { position: fixed; bottom: 40px; width: 100%; text-align: center; color: #fff; z-index: 10; opacity: 0.6; font-size: 12px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <audio id="music" loop><source src="music.mp3"></audio>
+    <audio id="bgm" loop><source src="music.mp3"></audio>
 
-    <div class="video-bg">
-        <video muted loop playsinline><source src="vid1.mp4"></video>
-        <video muted loop playsinline><source src="vid2.mp4"></video>
-        <video muted loop playsinline><source src="vid3.mp4"></video>
-        <video muted loop playsinline><source src="vid4.mp4"></video>
+    <div class="v-grid">
+        <video muted loop playsinline id="v1"><source src="vid1.mp4"></video>
+        <video muted loop playsinline id="v2"><source src="vid2.mp4"></video>
+        <video muted loop playsinline id="v3"><source src="vid3.mp4"></video>
+        <video muted loop playsinline id="v4"><source src="vid4.mp4"></video>
     </div>
 
     <div id="box-container">
-        <model-viewer 
-            src="model.glb" 
-            id="model"
-            auto-rotate 
-            shadow-intensity="1" 
-            loading="eager"
-            camera-controls
-            touch-action="none"
-            style="width: 100%; height: 100%;">
-        </model-viewer>
+        <model-viewer src="model.glb" auto-rotate shadow-intensity="1" camera-controls touch-action="none" style="width: 100%; height: 100%;"></model-viewer>
     </div>
 
-    <div class="photo-stack" id="stack">
-        <div class="photo-wrapper" style="background-image:url('img1.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img2.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img3.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img4.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img5.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img6.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img7.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img8.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img9.jpg')"></div>
-        <div class="photo-wrapper" style="background-image:url('img10.jpg')"></div>
+    <div class="stack" id="stack">
+        <div class="img-card" style="background-image:url('img1.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img2.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img3.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img4.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img5.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img6.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img7.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img8.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card" style="background-image:url('img9.jpg')"><span>MARJOOOON ✨</span></div>
+        <div class="img-card active-card" style="background-image:url('img10.jpg')"><span>MARJOOOON ✨</span></div>
     </div>
 
-    <div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
+    <div id="msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
+    <div class="hint">EKRANGA BOSING VA SOVG'ANI TUTING!</div>
 
     <script>
         const box = document.getElementById('box-container');
         const stack = document.getElementById('stack');
-        const music = document.getElementById('music');
+        const bgm = document.getElementById('bgm');
         const vids = document.querySelectorAll('video');
 
-        // Quti harakati
-        let x = 50, y = 50, dx = 2, dy = 2;
+        let x = 30, y = 30, dx = 3, dy = 3, isCaught = false;
+
         function move() {
-            if(box.style.display === 'none') return;
+            if(isCaught) return;
             x += dx; y += dy;
-            if(x > window.innerWidth - 200 || x < 0) dx *= -1;
-            if(y > window.innerHeight - 200 || y < 0) dy *= -1;
+            if(x > window.innerWidth - 180 || x < 0) dx *= -1;
+            if(y > window.innerHeight - 180 || y < 0) dy *= -1;
             box.style.left = x + 'px';
             box.style.top = y + 'px';
             requestAnimationFrame(move);
         }
         move();
 
-        // Qutini bosganda
-        box.onclick = () => {
-            music.play();
-            vids.forEach(v => v.play());
-            box.style.display = 'none';
-            stack.style.display = 'block';
+        document.body.onclick = () => {
+            bgm.play().catch(() => {});
+            vids.forEach(v => v.play().catch(() => {}));
         };
 
-        // Rasmlarni bosganda
+        box.onclick = (e) => {
+            e.stopPropagation();
+            isCaught = true;
+            box.style.transition = "1s";
+            box.style.left = "50%"; box.style.top = "50%";
+            box.style.transform = "translate(-50%, -50%) scale(2)";
+            setTimeout(() => {
+                box.style.opacity = "0";
+                stack.style.display = "block";
+                document.querySelector('.hint').style.display = "none";
+            }, 1000);
+        };
+
         stack.onclick = () => {
-            const photos = stack.querySelectorAll('.photo-wrapper:not(.fly)');
-            if(photos.length > 0) {
-                photos[photos.length - 1].classList.add('fly');
+            const cards = stack.querySelectorAll('.img-card:not(.fly-away)');
+            if(cards.length > 0) {
+                const top = cards[cards.length - 1];
+                top.classList.add('fly-away');
+                if(cards.length > 1) {
+                    cards[cards.length - 2].classList.add('active-card');
+                }
             }
-            if(photos.length === 1) {
-                document.getElementById('final-msg').style.display = 'block';
+            if(cards.length === 1) {
+                setTimeout(() => {
+                    stack.style.display = 'none';
+                    document.getElementById('msg').style.display = 'block';
+                }, 500);
             }
         };
     </script>
