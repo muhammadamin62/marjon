@@ -5,71 +5,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aesthetic Spiritual Gift</title>
 
-<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob:; img-src * data: blob:; media-src * data: blob:; worker-src blob:;">
-
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif; user-select: none; }
+body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif; user-select: none; cursor: crosshair; }
 
-/* 🎬 VIDEOLAR */
+/* 🎬 VIDEOLAR (FONDA) */
 .video-bg {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-  z-index: -1; opacity: 0.35; pointer-events: none;
+  z-index: -1; opacity: 0.3; pointer-events: none;
 }
-.video-bg video { width: 100%; height: 100%; object-fit: cover; background: #000; }
+.video-bg video { width: 100%; height: 100%; object-fit: cover; }
 
-/* 📦 SOVG'A QUTISI KONTEYNERI (MUHIM!) */
-#box-container {
-  position: fixed; 
-  width: 150px; 
-  height: 150px;
-  z-index: 100; 
-  cursor: pointer;
-  left: 50%;
-  top: 50%;
+/* ✉️ KONVERT (XAT) STILI */
+#envelope-wrapper {
+  position: fixed; width: 200px; height: 150px;
+  background: #fdf5e6; border-radius: 5px;
+  z-index: 100; cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
 }
+#envelope-wrapper::before {
+  content: ''; position: absolute; top: 0; width: 0; height: 0;
+  border-left: 100px solid transparent; border-right: 100px solid transparent;
+  border-top: 80px solid #d4c4a8; z-index: 2; transition: 0.5s;
+}
+#envelope-wrapper.open::before { transform: rotateX(180deg); transform-origin: top; }
+.heart-seal { position: absolute; font-size: 30px; z-index: 3; color: #e91e63; }
 
+/* 📸 RASMLAR STACKI (AVVALGI STILDA) */
 .photo-stack {
-  position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
   width: 280px; height: 380px; display: none; z-index: 200;
 }
-
 .photo-wrapper {
   position: absolute; width: 100%; height: 100%;
   transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
   display: flex; flex-direction: column; align-items: center;
 }
-
 .photo-card {
   position: relative; width: 100%; height: 85%;
   background-size: cover; background-position: center;
-  border: 10px solid #fff;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+  border: 10px solid #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.9);
 }
-
-.view-btn {
-  position: absolute; bottom: 10px; right: 10px;
-  background: #fff; width: 35px; height: 35px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; cursor: pointer; z-index: 10; border: none;
-}
-
 .allah-text {
   margin-top: 15px; font-size: 28px; color: #FFD700; font-weight: bold;
-  text-shadow: 0 0 15px gold; opacity: 0; transform: translateY(20px);
-  transition: 0.6s;
+  text-shadow: 0 0 15px gold; opacity: 0; transform: translateY(20px); transition: 0.6s;
 }
-
 .active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
 
-.particle {
-  position: fixed; font-size: 26px; pointer-events: none; z-index: 3000;
-  animation: explode 1.2s ease-out forwards;
-}
-
+/* ✨ EFFEKTLAR */
+.particle { position: fixed; font-size: 24px; pointer-events: none; z-index: 3000; animation: explode 1.2s ease-out forwards; }
 @keyframes explode {
   0% { transform: translate(0,0) scale(0.5); opacity: 1; }
   100% { transform: translate(var(--x), var(--y)) scale(1.6) rotate(var(--r)); opacity: 0; }
@@ -78,25 +64,18 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
 #final-msg {
   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
   width: 90%; text-align: center; color: #FFD700; font-size: 28px;
-  font-weight: bold; z-index: 500; display: none; cursor: pointer;
-  text-shadow: 0 0 20px gold;
+  font-weight: bold; z-index: 500; display: none; text-shadow: 0 0 20px gold;
 }
-
-.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
-
-.zoom-active {
-  position: fixed !important; top: 50% !important; left: 50% !important;
-  width: 95vw !important; height: 80vh !important;
-  transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
-}
-
 .status { position: fixed; bottom: 20px; width: 100%; text-align: center; color: #fff; font-size: 14px; z-index: 50; opacity: 0.6; }
+
+/* Fly animatsiyasi */
+.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
 </style>
 </head>
 <body>
 
-<audio id="bg-music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
-<audio id="click-sound" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+<audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+<audio id="click-sound"><source src="click.mp3" type="audio/mpeg"></audio>
 
 <div class="video-bg">
   <video autoplay muted loop playsinline><source src="vid1.webm" type="video/webm"></video>
@@ -105,101 +84,112 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
   <video autoplay muted loop playsinline><source src="vid4.webm" type="video/webm"></video>
 </div>
 
-<div id="box-container">
-  <model-viewer 
-    id="gift-3d" 
-    src="model.glb" 
-    auto-rotate 
-    shadow-intensity="1" 
-    style="width: 100%; height: 100%;">
-  </model-viewer>
+<div id="envelope-wrapper">
+  <div class="heart-seal">❤️</div>
 </div>
 
 <div class="photo-stack" id="p-stack">
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"></div><div class="allah-text">MARJOOOOON</div></div>
 </div>
 
 <div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
-<div class="status" id="hint">EKRANGA BOSING VA SOVG'ANI TUTING! 📦</div>
+<div class="status" id="hint">XATNI TUTING VA OCHING! ✉️</div>
 
 <script>
 const bgMusic = document.getElementById('bg-music');
 const clickSound = document.getElementById('click-sound');
-const box = document.getElementById('box-container');
+const envelope = document.getElementById('envelope-wrapper');
 const pStack = document.getElementById('p-stack');
 const finalMsg = document.getElementById('final-msg');
 const videos = document.querySelectorAll('video');
 
 let caught = false;
-let bx = Math.random() * (window.innerWidth - 150);
-let by = Math.random() * (window.innerHeight - 150);
-let bdx = 5, bdy = 5;
+let ex = Math.random() * (window.innerWidth - 200), ey = Math.random() * (window.innerHeight - 150);
+let edx = 4, edy = 4;
 
-// Portlash funksiyasi (Emotsiyalar)
 function explosion(x, y) {
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 12; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
     p.innerHTML = Math.random() > 0.5 ? '😚' : '❤️';
-    p.style.left = x + 'px';
-    p.style.top = y + 'px';
-    p.style.setProperty('--x', (Math.random() - 0.5) * 500 + 'px');
-    p.style.setProperty('--y', (Math.random() - 0.5) * 500 + 'px');
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    p.style.setProperty('--x', (Math.random() - 0.5) * 400 + 'px');
+    p.style.setProperty('--y', (Math.random() - 0.5) * 400 + 'px');
     p.style.setProperty('--r', Math.random() * 360 + 'deg');
-    fragment.appendChild(p);
+    document.body.appendChild(p);
     setTimeout(() => p.remove(), 1200);
   }
-  document.body.appendChild(fragment);
 }
 
 function move() {
   if (caught) return;
-  bx += bdx; by += bdy;
-  if (bx + 150 > window.innerWidth || bx < 0) bdx *= -1;
-  if (by + 150 > window.innerHeight || by < 0) bdy *= -1;
-  box.style.left = bx + 'px'; box.style.top = by + 'px';
+  ex += edx; ey += edy;
+  if (ex + 200 > window.innerWidth || ex < 0) edx *= -1;
+  if (ey + 150 > window.innerHeight || ey < 0) edy *= -1;
+  envelope.style.left = ex + 'px'; envelope.style.top = ey + 'px';
   requestAnimationFrame(move);
 }
-
 move();
 
-// Birinchi marta ekranga bosganda musiqa va videolarni "uyg'otish"
-window.addEventListener('click', function firstClick(e) {
-  bgMusic.play().catch(err => console.log("Music play blocked"));
+// Ekranga birinchi klik
+document.body.addEventListener('click', () => {
+  bgMusic.play().catch(() => {});
   videos.forEach(v => v.play());
-  
-  // Emotsiyalarni chiqaramiz
-  explosion(e.clientX, e.clientY);
-  
-  // Bu funksiya faqat bir marta ishlashi kerak
-  window.removeEventListener('click', firstClick);
-}, { once: false }); // 'once: false' bo'lsa, har safar klikda portlash ishlaydi
+}, { once: true });
 
-// Har qanday klikda emotsiya chiqishi uchun alohida:
+// Umumiy effekt
 document.body.onclick = (e) => {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(() => {});
-    explosion(e.clientX, e.clientY);
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+  explosion(e.clientX, e.clientY);
 };
 
-box.onclick = (e) => {
+// Xatni bosganda
+envelope.onclick = (e) => {
   e.stopPropagation();
   caught = true;
-  box.style.transition = "0.7s all cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-  box.style.left = "50%"; box.style.top = "50%";
-  box.style.transform = "translate(-50%, -50%) scale(1.8)";
+  envelope.classList.add('open');
+  envelope.style.transition = "1s all ease";
+  envelope.style.left = "50%"; envelope.style.top = "50%";
+  envelope.style.transform = "translate(-50%, -50%) scale(0.5)";
+  envelope.style.opacity = "0";
 
   setTimeout(() => {
-    box.style.opacity = "0";
+    envelope.style.display = "none";
     pStack.style.display = "block";
     document.getElementById('hint').style.display = "none";
-    setTimeout(() => box.style.display = "none", 500);
-  }, 1000);
+  }, 800);
 };
 
-// ... (Pstack va boshqa funksiyalar qoladi) ...
+// Rasmlarni varaqlash
+pStack.onclick = (e) => {
+  e.stopPropagation();
+  const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
+  if (wrappers.length === 0) return;
+
+  const top = wrappers[wrappers.length - 1];
+  top.classList.add('fly');
+  top.classList.remove('active-wrapper');
+
+  if (wrappers.length > 1) {
+    wrappers[wrappers.length - 2].classList.add('active-wrapper');
+  } else {
+    setTimeout(() => {
+      pStack.style.display = 'none';
+      finalMsg.style.display = 'block';
+    }, 600);
+  }
+};
 </script>
+
 </body>
 </html>
