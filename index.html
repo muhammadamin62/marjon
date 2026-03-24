@@ -1,248 +1,232 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aesthetic Marjoon Gift</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marjoon's Special Gift</title>
 
-<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob:; img-src * data: blob:; store-src * data: blob:; media-src * data: blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob: https://*.railway.app; img-src * data: blob:; media-src * data: blob:; worker-src blob:;">
 
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif; user-select: none; }
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; overflow: hidden; font-family: 'Georgia', serif; user-select: none; }
 
-/* 🎬 VIDEOLAR */
-.video-bg {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
-  z-index: 1; opacity: 0.3; pointer-events: none;
-}
-.video-bg video { width: 100%; height: 100%; object-fit: cover; }
+        /* 🎬 VIDEOLAR (FONDA) */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+            z-index: 1; opacity: 0.3; pointer-events: none;
+        }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
 
-/* 📦 GIFT BOX */
-#box-container {
-  position: fixed; width: 140px; height: 140px;
-  z-index: 100; display: block; cursor: pointer;
-  will-change: left, top;
-}
+        /* 📦 SOVG'A QUTISI (3D) */
+        #box-container {
+            position: fixed; width: 150px; height: 150px;
+            z-index: 100; cursor: pointer;
+            will-change: left, top;
+        }
 
-/* 📄 PHOTO STACK */
-.photo-stack {
-  position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
-  width: 280px; height: 380px; display: none; z-index: 200;
-}
+        /* 📸 RASMLAR STEKI */
+        .photo-stack {
+            position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            width: 280px; height: 380px; display: none; z-index: 200;
+        }
+        .photo-wrapper {
+            position: absolute; width: 100%; height: 100%;
+            transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .photo-card {
+            position: relative; width: 100%; height: 85%;
+            background-size: cover; background-position: center;
+            border: 10px solid #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+        }
+        .view-btn {
+            position: absolute; bottom: 10px; right: 10px;
+            background: #fff; width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; z-index: 10; border: none;
+        }
+        .allah-text {
+            margin-top: 15px; font-size: 24px; color: #FFD700; font-weight: bold;
+            text-shadow: 0 0 10px gold; opacity: 0; transform: translateY(10px);
+            transition: 0.5s;
+        }
+        .active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
 
-.photo-wrapper {
-  position: absolute; width: 100%; height: 100%;
-  transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
-  display: flex; flex-direction: column; align-items: center;
-}
+        /* ✨ EFFEKTLAR */
+        .particle {
+            position: fixed; font-size: 24px; pointer-events: none; z-index: 3000;
+            animation: explode 1.2s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1.5) rotate(var(--r)); opacity: 0; }
+        }
 
-.photo-card {
-  position: relative; width: 100%; height: 85%;
-  background-size: cover; background-position: center;
-  border: 10px solid #fff;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
-}
+        #final-msg {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; text-align: center; color: #FFD700; font-size: 26px;
+            z-index: 500; display: none; cursor: pointer; text-shadow: 0 0 15px gold;
+        }
 
-.view-btn {
-  position: absolute; bottom: 10px; right: 10px;
-  background: #fff; width: 35px; height: 35px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; cursor: pointer; z-index: 10;
-}
+        /* Holat matni */
+        .status-hint { 
+            position: fixed; bottom: 30px; width: 100%; text-align: center; 
+            color: #fff; font-size: 14px; z-index: 50; opacity: 0.7; letter-spacing: 2px;
+        }
 
-.allah-text {
-  margin-top: 15px; font-size: 28px; color: #FFD700; font-weight: bold;
-  text-shadow: 0 0 15px gold; opacity: 0; transform: translateY(20px);
-  transition: 0.6s;
-}
-
-.active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
-
-.particle {
-  position: fixed; font-size: 26px; pointer-events: none; z-index: 3000;
-  animation: explode 1.2s ease-out forwards;
-}
-
-@keyframes explode {
-  0% { transform: translate(0,0) scale(0.5); opacity: 1; }
-  100% { transform: translate(var(--x), var(--y)) scale(1.6) rotate(var(--r)); opacity: 0; }
-}
-
-#final-msg {
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 90%; text-align: center; color: #FFD700; font-size: 28px;
-  font-weight: bold; z-index: 500; display: none; cursor: pointer;
-  text-shadow: 0 0 20px gold;
-  animation: pulse 2.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
-}
-
-.photo-wrapper:nth-child(odd) { transform: rotate(-5deg); }
-.photo-wrapper:nth-child(even) { transform: rotate(4deg); }
-.photo-wrapper:last-child { transform: rotate(0deg); z-index: 50; }
-.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
-
-.zoom-active {
-  position: fixed !important; top: 50% !important; left: 50% !important;
-  width: 95vw !important; height: 80vh !important;
-  transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
-}
-
-.status { position: fixed; bottom: 20px; width: 100%; text-align: center; color: #fff; font-size: 14px; z-index: 50; opacity: 0.6; }
-</style>
+        /* Rasm uchib ketishi */
+        .photo-wrapper.fly { transform: translateY(-120vh) rotate(30deg) !important; opacity: 0; }
+        
+        /* Kattalashtirish */
+        .zoom-active {
+            position: fixed !important; top: 50% !important; left: 50% !important;
+            width: 95vw !important; height: 85vh !important;
+            transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
+        }
+    </style>
 </head>
 <body>
 
-<audio id="bg-music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
-<audio id="click-sound" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+    <audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="click-sound"><source src="click.mp3" type="audio/mpeg"></audio>
 
-<div class="video-bg">
-  <video muted loop playsinline crossorigin="anonymous"><source src="vid1.mp4" type="video/mp4"></video>
-  <video muted loop playsinline crossorigin="anonymous"><source src="vid2.mp4" type="video/mp4"></video>
-  <video muted loop playsinline crossorigin="anonymous"><source src="vid3.mp4" type="video/mp4"></video>
-  <video muted loop playsinline crossorigin="anonymous"><source src="vid4.mp4" type="video/mp4"></video>
-</div>
+    <div class="video-bg">
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid1.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid2.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid3.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid4.mp4" type="video/mp4"></video>
+    </div>
 
-<div id="box-container">
-  <model-viewer id="gift-3d" src="model.glb" crossorigin="anonymous" auto-rotate animation-name="Open" shadow-intensity="1" style="width: 100%; height: 100%;"></model-viewer>
-</div>
+    <div id="box-container">
+        <model-viewer 
+            id="gift-3d" 
+            src="model.glb" 
+            crossorigin="anonymous" 
+            loading="eager"
+            auto-rotate 
+            shadow-intensity="1" 
+            style="width: 100%; height: 100%;">
+        </model-viewer>
+    </div>
 
-<div class="photo-stack" id="p-stack">
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-  <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
-</div>
+    <div class="photo-stack" id="p-stack">
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+    </div>
 
-<div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺<br><span style="font-size:16px; color:white; font-weight:normal;">(Qayta ko'rish uchun bosing)</span></div>
-<div class="status" id="hint">SOVG'ANI TUTING! 📦</div>
+    <div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
+    <div class="status-hint" id="hint">SOVG'ANI TUTING! 📦</div>
 
-<script>
-const bgMusic = document.getElementById('bg-music');
-const clickSound = document.getElementById('click-sound');
-const box = document.getElementById('box-container');
-const pStack = document.getElementById('p-stack');
-const finalMsg = document.getElementById('final-msg');
-const videos = document.querySelectorAll('video');
+    <script>
+        const bgMusic = document.getElementById('bg-music');
+        const clickSound = document.getElementById('click-sound');
+        const box = document.getElementById('box-container');
+        const pStack = document.getElementById('p-stack');
+        const finalMsg = document.getElementById('final-msg');
+        const vids = document.querySelectorAll('video');
 
-let caught = false;
-let bx = Math.random() * (window.innerWidth - 140);
-let by = Math.random() * (window.innerHeight - 140);
-let bdx = 10, bdy = 10;
+        let caught = false;
+        let x = Math.random() * (window.innerWidth - 150);
+        let y = Math.random() * (window.innerHeight - 150);
+        let dx = 4, dy = 4;
 
-function explosion(x, y) {
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < 10; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    p.innerHTML = Math.random() > 0.4 ? '😚' : '❤️';
-    p.style.left = x + 'px';
-    p.style.top = y + 'px';
-    p.style.setProperty('--x', (Math.random() - 0.5) * 400 + 'px');
-    p.style.setProperty('--y', (Math.random() - 0.5) * 400 + 'px');
-    p.style.setProperty('--r', Math.random() * 360 + 'deg');
-    fragment.appendChild(p);
-    setTimeout(() => p.remove(), 1200);
-  }
-  document.body.appendChild(fragment);
-}
+        // ❤️ Portlash effekti
+        function createHeart(cx, cy) {
+            for(let i=0; i<8; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerHTML = '❤️';
+                p.style.left = cx + 'px';
+                p.style.top = cy + 'px';
+                p.style.setProperty('--x', (Math.random()-0.5)*300 + 'px');
+                p.style.setProperty('--y', (Math.random()-0.5)*300 + 'px');
+                p.style.setProperty('--r', Math.random()*360 + 'deg');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1200);
+            }
+        }
 
-function move() {
-  if (caught) return;
-  bx += bdx; by += bdy;
-  if (bx + 140 > window.innerWidth || bx < 0) bdx *= -1;
-  if (by + 140 > window.innerHeight || by < 0) bdy *= -1;
-  box.style.left = bx + 'px'; box.style.top = by + 'px';
-  requestAnimationFrame(move);
-}
+        // 📦 Quti harakati
+        function animateBox() {
+            if (!caught) {
+                x += dx; y += dy;
+                if (x + 150 > window.innerWidth || x < 0) dx *= -1;
+                if (y + 150 > window.innerHeight || y < 0) dy *= -1;
+                box.style.left = x + 'px';
+                box.style.top = y + 'px';
+                requestAnimationFrame(animateBox);
+            }
+        }
+        animateBox();
 
-window.onload = () => { move(); };
+        // Birinchi klikda hamma narsani aktivlashtirish
+        document.body.addEventListener('click', function init() {
+            bgMusic.play().catch(() => {});
+            vids.forEach(v => v.play().catch(() => {}));
+            document.body.removeEventListener('click', init);
+        });
 
-document.body.onclick = function(e) {
-  bgMusic.volume = 1.0;
-  bgMusic.play().catch(() => {});
-  videos.forEach(v => v.play().catch(() => {}));
+        // Qutini tutish
+        box.onclick = (e) => {
+            e.stopPropagation();
+            caught = true;
+            clickSound.play();
+            createHeart(e.clientX, e.clientY);
+            
+            box.style.transition = "all 0.8s ease";
+            box.style.left = "50%"; box.style.top = "50%";
+            box.style.transform = "translate(-50%, -50%) scale(2)";
+            
+            setTimeout(() => {
+                box.style.opacity = "0";
+                pStack.style.display = "block";
+                document.getElementById('hint').style.display = "none";
+                setTimeout(() => box.style.display = "none", 500);
+            }, 1000);
+        };
 
-  clickSound.currentTime = 0;
-  clickSound.play().catch(() => {});
-  explosion(e.clientX, e.clientY);
+        // Rasm steki bilan ishlash
+        pStack.onclick = (e) => {
+            const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
+            if (wrappers.length === 0) return;
 
-  document.body.onclick = (ev) => {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(() => {});
-    explosion(ev.clientX, ev.clientY);
-  };
-};
+            const top = wrappers[wrappers.length - 1];
+            clickSound.currentTime = 0;
+            clickSound.play();
+            createHeart(e.clientX, e.clientY);
 
-box.onclick = (e) => {
-  e.stopPropagation();
-  caught = true;
-  box.style.transition = "0.7s all cubic-bezier(0.175, 0.885, 0.32, 1.275)";
-  box.style.left = "50%"; box.style.top = "50%";
-  box.style.transform = "translate(-50%, -50%) scale(2)";
-  document.getElementById('gift-3d').play();
+            if (e.target.classList.contains('view-btn')) {
+                top.classList.toggle('zoom-active');
+                return;
+            }
 
-  setTimeout(() => {
-    box.style.opacity = "0";
-    pStack.style.display = "block";
-    document.getElementById('hint').style.display = "none";
-    setTimeout(() => box.style.display = "none", 500);
-  }, 1000);
-};
+            if (!top.classList.contains('zoom-active')) {
+                top.classList.add('fly');
+                if (wrappers.length > 1) {
+                    wrappers[wrappers.length - 2].classList.add('active-wrapper');
+                } else {
+                    setTimeout(() => {
+                        pStack.style.display = 'none';
+                        finalMsg.style.display = 'block';
+                    }, 600);
+                }
+            }
+        };
 
-pStack.onclick = (e) => {
-  e.stopPropagation();
-  const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
-  if (wrappers.length === 0) return;
-
-  const topWrapper = wrappers[wrappers.length - 1];
-  explosion(e.clientX, e.clientY);
-
-  if (e.target.classList.contains('view-btn')) {
-    topWrapper.classList.toggle('zoom-active');
-    return;
-  }
-
-  if (!topWrapper.classList.contains('zoom-active')) {
-    topWrapper.classList.add('fly');
-    topWrapper.classList.remove('active-wrapper');
-
-    if (wrappers.length > 1) {
-      wrappers[wrappers.length - 2].classList.add('active-wrapper');
-    } else {
-      setTimeout(() => {
-        pStack.style.display = 'none';
-        finalMsg.style.display = 'block';
-      }, 800);
-    }
-  }
-};
-
-finalMsg.onclick = (e) => {
-  e.stopPropagation();
-  finalMsg.style.display = 'none';
-  const allWrappers = pStack.querySelectorAll('.photo-wrapper');
-  allWrappers.forEach((p, i) => {
-    p.classList.remove('fly', 'zoom-active', 'active-wrapper');
-    if (i === allWrappers.length - 1) p.classList.add('active-wrapper');
-  });
-  pStack.style.display = 'block';
-};
-</script>
-
+        finalMsg.onclick = () => location.reload();
+    </script>
 </body>
 </html>
