@@ -192,27 +192,26 @@ move();
 
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) bgMusic.pause();
-  else if (caught) bgMusic.play();
+  else if (caught) bgMusic.play().catch(() => {});
 });
 
-// Ekranga har qanday tegish bo'lganda musiqani yoqish
+// Ekranga tegish mantiqi
 document.body.onclick = function(e) {
-  // Musiqani boshlash
-  bgMusic.play().then(() => {
-    console.log("Musiqa boshlandi");
-  }).catch((error) => {
-    console.log("Brauzer musiqani blokladi, yana bir marta bosing");
-  });
-
-  // Fon videolarini ham baravar yoqish
+  bgMusic.play().catch(() => {});
   videos.forEach(v => v.play().catch(() => {}));
-
-  // Effektlar (emotsiyalar) chiqishi
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
   explosion(e.clientX, e.clientY);
 };
 
+// Konvertni ushlash (BU QISIM TO'G'RILANDI)
+envelope.onclick = (e) => {
+  e.stopPropagation();
+  caught = true;
+  explosion(e.clientX, e.clientY);
+  envelope.style.transition = "0.7s all ease";
+  envelope.style.transform = "scale(0.1)";
+  envelope.style.opacity = "0";
 
   setTimeout(() => {
     envelope.style.display = "none";
@@ -254,7 +253,7 @@ function restart() {
   });
   pStack.style.display = 'block';
   bgMusic.currentTime = 0;
-  bgMusic.play();
+  bgMusic.play().catch(() => {});
 }
 </script>
 
