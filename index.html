@@ -195,21 +195,24 @@ document.addEventListener('visibilitychange', () => {
   else if (caught) bgMusic.play();
 });
 
+// Ekranga har qanday tegish bo'lganda musiqani yoqish
 document.body.onclick = function(e) {
-  bgMusic.play().catch(() => {});
+  // Musiqani boshlash
+  bgMusic.play().then(() => {
+    console.log("Musiqa boshlandi");
+  }).catch((error) => {
+    console.log("Brauzer musiqani blokladi, yana bir marta bosing");
+  });
+
+  // Fon videolarini ham baravar yoqish
   videos.forEach(v => v.play().catch(() => {}));
+
+  // Effektlar (emotsiyalar) chiqishi
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
   explosion(e.clientX, e.clientY);
 };
 
-envelope.onclick = (e) => {
-  e.stopPropagation();
-  caught = true;
-  explosion(e.clientX, e.clientY);
-  envelope.style.transition = "0.7s all ease";
-  envelope.style.transform = "translate(-50%, -50%) scale(0.1)";
-  envelope.style.opacity = "0";
 
   setTimeout(() => {
     envelope.style.display = "none";
