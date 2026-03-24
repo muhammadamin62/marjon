@@ -3,136 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You 💖</title>
+    <title>Marjoon's Special Gift</title>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob: https://*.railway.app; img-src * data: blob:; media-src * data: blob:; worker-src blob:;">
+
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #000; overflow: hidden; font-family: 'Poppins', sans-serif; }
-        
-        /* Fon videolari */
-        .v-grid {
+        body { background: #000; overflow: hidden; font-family: 'Georgia', serif; user-select: none; }
+
+        /* 🎬 VIDEOLAR (FONDA) */
+        .video-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            display: grid; grid-template-columns: 1fr 1fr; opacity: 0.35; z-index: 1;
+            display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+            z-index: 1; opacity: 0.3; pointer-events: none;
         }
-        video { width: 100%; height: 100%; object-fit: cover; }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 📦 3D Quti */
+        /* 📦 SOVG'A QUTISI (3D) */
         #box-container {
-            position: absolute; width: 180px; height: 180px;
-            z-index: 100; cursor: pointer; transition: transform 0.3s;
+            position: fixed; width: 150px; height: 150px;
+            z-index: 100; cursor: pointer;
+            will-change: left, top;
         }
-        #box-container:active { transform: scale(0.9); }
 
-        /* 📸 Rasmlar */
-        .stack {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        /* 📸 RASMLAR STEKI */
+        .photo-stack {
+            position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
             width: 280px; height: 380px; display: none; z-index: 200;
         }
-        .img-card {
+        .photo-wrapper {
             position: absolute; width: 100%; height: 100%;
-            border: 10px solid #fff; box-shadow: 0 15px 45px rgba(0,0,0,0.8);
+            transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .photo-card {
+            position: relative; width: 100%; height: 85%;
             background-size: cover; background-position: center;
-            transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-            display: flex; align-items: flex-end; justify-content: center;
+            border: 10px solid #fff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
         }
-        .img-card span { margin-bottom: -40px; color: gold; font-weight: bold; font-size: 20px; text-shadow: 0 0 10px #000; opacity: 0; transition: 0.3s; }
-        .active-card span { opacity: 1; transform: translateY(-50px); }
+        .view-btn {
+            position: absolute; bottom: 10px; right: 10px;
+            background: #fff; width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; cursor: pointer; z-index: 10; border: none;
+        }
+        .allah-text {
+            margin-top: 15px; font-size: 24px; color: #FFD700; font-weight: bold;
+            text-shadow: 0 0 10px gold; opacity: 0; transform: translateY(10px);
+            transition: 0.5s;
+        }
+        .active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
 
-        .fly-away { transform: translateY(-120vh) rotate(35deg) scale(0.5) !important; opacity: 0; }
+        /* ✨ EFFEKTLAR */
+        .particle {
+            position: fixed; font-size: 24px; pointer-events: none; z-index: 3000;
+            animation: explode 1.2s ease-out forwards;
+        }
+        @keyframes explode {
+            0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--x), var(--y)) scale(1.5) rotate(var(--r)); opacity: 0; }
+        }
 
-        #msg {
+        #final-msg {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: #FFD700; font-size: 22px; text-align: center; display: none; z-index: 300;
-            text-shadow: 0 0 20px orange; font-weight: bold; padding: 20px;
+            width: 90%; text-align: center; color: #FFD700; font-size: 26px;
+            z-index: 500; display: none; cursor: pointer; text-shadow: 0 0 15px gold;
         }
 
-        .hint { position: fixed; bottom: 40px; width: 100%; text-align: center; color: #fff; z-index: 10; opacity: 0.6; font-size: 12px; letter-spacing: 2px; }
+        /* Holat matni */
+        .status-hint { 
+            position: fixed; bottom: 30px; width: 100%; text-align: center; 
+            color: #fff; font-size: 14px; z-index: 50; opacity: 0.7; letter-spacing: 2px;
+        }
+
+        /* Rasm uchib ketishi */
+        .photo-wrapper.fly { transform: translateY(-120vh) rotate(30deg) !important; opacity: 0; }
+        
+        /* Kattalashtirish */
+        .zoom-active {
+            position: fixed !important; top: 50% !important; left: 50% !important;
+            width: 95vw !important; height: 85vh !important;
+            transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
+        }
     </style>
 </head>
 <body>
 
-    <audio id="bgm" loop><source src="music.mp3"></audio>
+    <audio id="bg-music" loop><source src="music.mp3" type="audio/mpeg"></audio>
+    <audio id="click-sound"><source src="click.mp3" type="audio/mpeg"></audio>
 
-    <div class="v-grid">
-        <video muted loop playsinline id="v1"><source src="vid1.mp4"></video>
-        <video muted loop playsinline id="v2"><source src="vid2.mp4"></video>
-        <video muted loop playsinline id="v3"><source src="vid3.mp4"></video>
-        <video muted loop playsinline id="v4"><source src="vid4.mp4"></video>
+    <div class="video-bg">
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid1.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid2.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid3.mp4" type="video/mp4"></video>
+        <video muted loop playsinline crossorigin="anonymous"><source src="vid4.mp4" type="video/mp4"></video>
     </div>
 
     <div id="box-container">
-        <model-viewer src="model.glb" auto-rotate shadow-intensity="1" camera-controls touch-action="none" style="width: 100%; height: 100%;"></model-viewer>
+        <model-viewer 
+            id="gift-3d" 
+            src="model.glb" 
+            crossorigin="anonymous" 
+            loading="eager"
+            auto-rotate 
+            shadow-intensity="1" 
+            style="width: 100%; height: 100%;">
+        </model-viewer>
     </div>
 
-    <div class="stack" id="stack">
-        <div class="img-card" style="background-image:url('img1.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img2.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img3.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img4.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img5.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img6.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img7.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img8.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card" style="background-image:url('img9.jpg')"><span>MARJOOOON ✨</span></div>
-        <div class="img-card active-card" style="background-image:url('img10.jpg')"><span>MARJOOOON ✨</span></div>
+    <div class="photo-stack" id="p-stack">
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
+        <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><button class="view-btn">👁</button></div><div class="allah-text">MARJOOOOON</div></div>
     </div>
 
-    <div id="msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
-    <div class="hint">EKRANGA BOSING VA SOVG'ANI TUTING!</div>
+    <div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
+    <div class="status-hint" id="hint">SOVG'ANI TUTING! 📦</div>
 
     <script>
+        const bgMusic = document.getElementById('bg-music');
+        const clickSound = document.getElementById('click-sound');
         const box = document.getElementById('box-container');
-        const stack = document.getElementById('stack');
-        const bgm = document.getElementById('bgm');
+        const pStack = document.getElementById('p-stack');
+        const finalMsg = document.getElementById('final-msg');
         const vids = document.querySelectorAll('video');
 
-        let x = 30, y = 30, dx = 3, dy = 3, isCaught = false;
+        let caught = false;
+        let x = Math.random() * (window.innerWidth - 150);
+        let y = Math.random() * (window.innerHeight - 150);
+        let dx = 4, dy = 4;
 
-        function move() {
-            if(isCaught) return;
-            x += dx; y += dy;
-            if(x > window.innerWidth - 180 || x < 0) dx *= -1;
-            if(y > window.innerHeight - 180 || y < 0) dy *= -1;
-            box.style.left = x + 'px';
-            box.style.top = y + 'px';
-            requestAnimationFrame(move);
+        // ❤️ Portlash effekti
+        function createHeart(cx, cy) {
+            for(let i=0; i<8; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerHTML = '❤️';
+                p.style.left = cx + 'px';
+                p.style.top = cy + 'px';
+                p.style.setProperty('--x', (Math.random()-0.5)*300 + 'px');
+                p.style.setProperty('--y', (Math.random()-0.5)*300 + 'px');
+                p.style.setProperty('--r', Math.random()*360 + 'deg');
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1200);
+            }
         }
-        move();
 
-        document.body.onclick = () => {
-            bgm.play().catch(() => {});
+        // 📦 Quti harakati
+        function animateBox() {
+            if (!caught) {
+                x += dx; y += dy;
+                if (x + 150 > window.innerWidth || x < 0) dx *= -1;
+                if (y + 150 > window.innerHeight || y < 0) dy *= -1;
+                box.style.left = x + 'px';
+                box.style.top = y + 'px';
+                requestAnimationFrame(animateBox);
+            }
+        }
+        animateBox();
+
+        // Birinchi klikda hamma narsani aktivlashtirish
+        document.body.addEventListener('click', function init() {
+            bgMusic.play().catch(() => {});
             vids.forEach(v => v.play().catch(() => {}));
-        };
+            document.body.removeEventListener('click', init);
+        });
 
+        // Qutini tutish
         box.onclick = (e) => {
             e.stopPropagation();
-            isCaught = true;
-            box.style.transition = "1s";
+            caught = true;
+            clickSound.play();
+            createHeart(e.clientX, e.clientY);
+            
+            box.style.transition = "all 0.8s ease";
             box.style.left = "50%"; box.style.top = "50%";
             box.style.transform = "translate(-50%, -50%) scale(2)";
+            
             setTimeout(() => {
                 box.style.opacity = "0";
-                stack.style.display = "block";
-                document.querySelector('.hint').style.display = "none";
+                pStack.style.display = "block";
+                document.getElementById('hint').style.display = "none";
+                setTimeout(() => box.style.display = "none", 500);
             }, 1000);
         };
 
-        stack.onclick = () => {
-            const cards = stack.querySelectorAll('.img-card:not(.fly-away)');
-            if(cards.length > 0) {
-                const top = cards[cards.length - 1];
-                top.classList.add('fly-away');
-                if(cards.length > 1) {
-                    cards[cards.length - 2].classList.add('active-card');
+        // Rasm steki bilan ishlash
+        pStack.onclick = (e) => {
+            const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
+            if (wrappers.length === 0) return;
+
+            const top = wrappers[wrappers.length - 1];
+            clickSound.currentTime = 0;
+            clickSound.play();
+            createHeart(e.clientX, e.clientY);
+
+            if (e.target.classList.contains('view-btn')) {
+                top.classList.toggle('zoom-active');
+                return;
+            }
+
+            if (!top.classList.contains('zoom-active')) {
+                top.classList.add('fly');
+                if (wrappers.length > 1) {
+                    wrappers[wrappers.length - 2].classList.add('active-wrapper');
+                } else {
+                    setTimeout(() => {
+                        pStack.style.display = 'none';
+                        finalMsg.style.display = 'block';
+                    }, 600);
                 }
             }
-            if(cards.length === 1) {
-                setTimeout(() => {
-                    stack.style.display = 'none';
-                    document.getElementById('msg').style.display = 'block';
-                }, 500);
-            }
         };
+
+        finalMsg.onclick = () => location.reload();
     </script>
 </body>
 </html>
