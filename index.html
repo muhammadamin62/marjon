@@ -46,7 +46,10 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
   position: absolute; width: 100%; height: 100%;
   transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
   display: flex; flex-direction: column; align-items: center;
+  pointer-events: none;
 }
+
+.photo-wrapper.active-wrapper { pointer-events: auto; }
 
 .photo-card {
   position: relative; width: 100%; height: 85%;
@@ -60,12 +63,25 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
 .photo-card video { width: 100%; height: 100%; object-fit: cover; }
 
 .allah-text {
-  margin-top: 15px; font-size: 28px; color: #FFD700; font-weight: bold;
-  text-shadow: 0 0 15px gold; opacity: 0; transform: translateY(20px);
-  transition: 0.6s;
+  margin-top: 15px; font-size: 24px; color: #FFD700; font-weight: bold;
+  text-shadow: 0 0 15px gold; 
+  opacity: 0; 
+  transform: translateY(30px) scale(0.8);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  width: 120%;
 }
 
-.active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
+.active-wrapper .allah-text { 
+  opacity: 1; 
+  transform: translateY(0) scale(1);
+  animation: floatText 3s infinite ease-in-out;
+}
+
+@keyframes floatText {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.05); }
+}
 
 .particle {
   position: fixed; font-size: 26px; pointer-events: none; z-index: 3000;
@@ -83,12 +99,18 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
   font-weight: bold; z-index: 500; display: none; text-shadow: 0 0 20px gold;
 }
 
+.restart-btn {
+  margin-top: 25px; padding: 12px 25px; font-size: 18px; 
+  background: gold; border: none; border-radius: 50px;
+  cursor: pointer; font-weight: bold; color: #000;
+  box-shadow: 0 5px 15px gold; transition: 0.3s;
+}
+
 .photo-wrapper:nth-child(1n) { transform: rotate(-5deg); }
 .photo-wrapper:nth-child(2n) { transform: rotate(4deg); }
 .photo-wrapper:nth-child(3n) { transform: rotate(-2deg); }
 .photo-wrapper:nth-child(4n) { transform: rotate(3deg); }
-.photo-wrapper:last-child { transform: rotate(0deg); z-index: 50; }
-.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
+.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; pointer-events: none; }
 
 .status { position: fixed; bottom: 20px; width: 100%; text-align: center; color: #fff; font-size: 14px; z-index: 50; opacity: 0.6; }
 </style>
@@ -110,23 +132,25 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
 </div>
 
 <div class="photo-stack" id="p-stack">
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"></div><div class="allah-text">Uzimni maktabm</div></div>
-  <div class="photo-wrapper"><div class="photo-card"><video muted loop playsinline><source src="vid_extra1.webm" type="video/webm"></video></div><div class="allah-text">Krinj moment</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"></div><div class="allah-text">Chip va Deyl😅</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"></div><div class="allah-text">Kulishingdan😊</div></div>
-  <div class="photo-wrapper"><div class="photo-card"><video muted loop playsinline><source src="vid_extra2.webm" type="video/webm"></video></div><div class="allah-text">Krinj moment</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"></div><div class="allah-text">3*4 rasm😂</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"></div><div class="allah-text">Jigar kuzlar🤭</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"></div><div class="allah-text">Jigar soch😊</div></div>
-  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"></div><div class="allah-text">Qor qizcha😊</div></div>
-  <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"></div><div class="allah-text">Chip va Deyl 2 qism</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"></div><div class="allah-text">Oycha😚</div></div>
   <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"></div><div class="allah-text">Chip va Deyl 3 qism</div></div>
-<div class="photo-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"></div><div class="allah-text">Oycha😚</div></div>
-
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"></div><div class="allah-text">Chip va Deyl 2 qism</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"></div><div class="allah-text">Qor qizcha😊</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"></div><div class="allah-text">Jigar soch😊</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"></div><div class="allah-text">Jigar kuzlar🤭</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"></div><div class="allah-text">3*4 rasm😂</div></div>
+  <div class="photo-wrapper"><div class="photo-card"><video muted loop playsinline><source src="vid_extra2.webm" type="video/webm"></video></div><div class="allah-text">Krinj moment</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"></div><div class="allah-text">Kulishingdan😊</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"></div><div class="allah-text">Chip va Deyl😅</div></div>
+  <div class="photo-wrapper"><div class="photo-card"><video muted loop playsinline><source src="vid_extra1.webm" type="video/webm"></video></div><div class="allah-text">Krinj moment</div></div>
+  <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"></div><div class="allah-text">Uzimni maktabm</div></div>
 </div>
-  
 
-<div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺</div>
+<div id="final-msg">
+  <p>Vdni tashlab qoyish esdan chiqmasin 😚☺</p>
+  <button class="restart-btn" onclick="restart()">Qaytadan ko'rish 🔄</button>
+</div>
+
 <div class="status" id="hint">TEZROQ TUTING! ✉️</div>
 
 <script>
@@ -140,7 +164,7 @@ const videos = document.querySelectorAll('video');
 let caught = false;
 let ex = Math.random() * (window.innerWidth - 90);
 let ey = Math.random() * (window.innerHeight - 60);
-let edx = 7, edy = 7; // TEZLIK SEKINLASHTIRILDI (14 dan 7 ga)
+let edx = 6, edy = 6; 
 
 function explosion(x, y) {
   for (let i = 0; i < 12; i++) {
@@ -166,16 +190,11 @@ function move() {
 }
 move();
 
-// SAYTDAN CHIQSA MUSIQANI O'CHIRISH
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    bgMusic.pause();
-  } else if (caught) {
-    bgMusic.play();
-  }
+  if (document.hidden) bgMusic.pause();
+  else if (caught) bgMusic.play();
 });
 
-// BIRINCHI KLIKDA MUSIQANI YOQISH VA EMOTSIYA
 document.body.onclick = function(e) {
   bgMusic.play().catch(() => {});
   videos.forEach(v => v.play().catch(() => {}));
@@ -187,9 +206,8 @@ document.body.onclick = function(e) {
 envelope.onclick = (e) => {
   e.stopPropagation();
   caught = true;
-  explosion(e.clientX, e.clientY); // Ushlaganda ham emotsiya
+  explosion(e.clientX, e.clientY);
   envelope.style.transition = "0.7s all ease";
-  envelope.style.left = "50%"; envelope.style.top = "50%";
   envelope.style.transform = "translate(-50%, -50%) scale(0.1)";
   envelope.style.opacity = "0";
 
@@ -202,7 +220,7 @@ envelope.onclick = (e) => {
 
 pStack.onclick = (e) => {
   e.stopPropagation();
-  explosion(e.clientX, e.clientY); // RASMGA BOSGANDA EMOTSIYA CHIQISHI
+  explosion(e.clientX, e.clientY);
 
   const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
   if (wrappers.length === 0) return;
@@ -212,9 +230,10 @@ pStack.onclick = (e) => {
   top.classList.remove('active-wrapper');
 
   if (wrappers.length > 1) {
-    wrappers[wrappers.length - 2].classList.add('active-wrapper');
-    const nextVideo = wrappers[wrappers.length - 2].querySelector('video');
-    if (nextVideo) nextVideo.play();
+    const next = wrappers[wrappers.length - 2];
+    next.classList.add('active-wrapper');
+    const nextVid = next.querySelector('video');
+    if (nextVid) nextVid.play();
   } else {
     setTimeout(() => {
       pStack.style.display = 'none';
@@ -222,6 +241,18 @@ pStack.onclick = (e) => {
     }, 800);
   }
 };
+
+function restart() {
+  finalMsg.style.display = 'none';
+  const all = pStack.querySelectorAll('.photo-wrapper');
+  all.forEach((w, i) => {
+    w.classList.remove('fly', 'active-wrapper');
+    if (i === all.length - 1) w.classList.add('active-wrapper');
+  });
+  pStack.style.display = 'block';
+  bgMusic.currentTime = 0;
+  bgMusic.play();
+}
 </script>
 
 </body>
