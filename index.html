@@ -203,7 +203,6 @@ document.body.onclick = function(e) {
   explosion(e.clientX, e.clientY);
 };
 
-// KONVERTNI USHLASH QISMI TIKLANDI
 envelope.onclick = (e) => {
   e.stopPropagation();
   caught = true;
@@ -243,21 +242,21 @@ pStack.onclick = (e) => {
   }
 };
 
+// Yangilangan restart funksiyasi
 function restart() {
   finalMsg.style.display = 'none';
   const all = pStack.querySelectorAll('.photo-wrapper');
-  all.forEach((w, i) => {
-    w.classList.remove('fly', 'active-wrapper');
-    if (i === 0) w.classList.add('active-wrapper'); // img1 eng pastda bo'lsa
-  });
   
-  // Tartibni to'g'irlash uchun eng ustki elementga qayta active beramiz
-  const activeNow = pStack.querySelectorAll('.photo-wrapper:not(.fly)');
-  activeNow[activeNow.length - 1].classList.add('active-wrapper');
+  all.forEach((w) => {
+    w.classList.remove('fly', 'active-wrapper');
+  });
+
+  // img1 rasmiga yana aktivlik beramiz (u eng ustida turishi uchun)
+  all[all.length - 1].classList.add('active-wrapper');
   
   pStack.style.display = 'block';
-  bgMusic.currentTime = 0;
-  bgMusic.play().catch(() => {});
+  // Bu yerda musiqa vaqtini nolga tushiradigan qator olib tashlandi
+  bgMusic.play().catch(() => {}); 
 }
 </script>
 
