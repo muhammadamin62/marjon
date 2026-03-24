@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetic Spiritual Gift</title>
+
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif; user-select: none; }
+
+.video-bg {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  z-index: 1; opacity: 0.3; pointer-events: none;
+}
+.video-bg video { width: 100%; height: 100%; object-fit: cover; }
+
+#box-container {
+  position: fixed; width: 140px; height: 140px;
+  z-index: 100; display: block; cursor: pointer;
+  will-change: left, top;
+}
+
+.photo-stack {
+  position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
+  width: 280px; height: 380px; display: none; z-index: 200;
+}
+
+.photo-wrapper {
+  position: absolute; width: 100%; height: 100%;
+  transition: all 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.photo-card {
+  position: relative; width: 100%; height: 85%;
+  background-size: cover; background-position: center;
+  border: 10px solid #fff;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+}
+
+.view-btn {
+  position: absolute; bottom: 10px; right: 10px;
+  background: #fff; width: 35px; height: 35px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; cursor: pointer; z-index: 10;
+}
+
+.allah-text {
+  margin-top: 15px; font-size: 28px; color: #FFD700; font-weight: bold;
+  text-shadow: 0 0 15px gold; opacity: 0; transform: translateY(20px);
+  transition: 0.6s;
+}
+
+.active-wrapper .allah-text { opacity: 1; transform: translateY(0); }
+
+.particle {
+  position: fixed; font-size: 26px; pointer-events: none; z-index: 3000;
+  animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: translate(0,0) scale(0.5); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(1.6) rotate(var(--r)); opacity: 0; }
+}
+
+#final-msg {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 90%; text-align: center; color: #FFD700; font-size: 28px;
+  font-weight: bold; z-index: 500; display: none; cursor: pointer;
+  text-shadow: 0 0 20px gold;
+  animation: pulse 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+.photo-wrapper:nth-child(1n) { transform: rotate(-5deg); }
+.photo-wrapper:nth-child(2n) { transform: rotate(4deg); }
+.photo-wrapper:nth-child(3n) { transform: rotate(-2deg); }
+.photo-wrapper:nth-child(4n) { transform: rotate(3deg); }
+.photo-wrapper:last-child { transform: rotate(0deg); z-index: 50; }
+
+.photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
+
+.zoom-active {
+  position: fixed !important; top: 50% !important; left: 50% !important;
+  width: 95vw !important; height: 80vh !important;
+  transform: translate(-50%, -50%) rotate(0deg) !important; z-index: 1000 !important;
+}
+
+.status { position: fixed; bottom: 20px; width: 100%; text-align: center; color: #fff; font-size: 14px; z-index: 50; opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<audio id="bg-music" loop preload="auto"><source src="music.mp3" type="audio/mpeg"></audio>
+<audio id="click-sound" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
+
+<div class="video-bg">
+  <video muted loop playsinline><source src="vid1.mp4" type="video/mp4"></video>
+  <video muted loop playsinline><source src="vid2.mp4" type="video/mp4"></video>
+  <video muted loop playsinline><source src="vid3.mp4" type="video/mp4"></video>
+  <video muted loop playsinline><source src="vid4.mp4" type="video/mp4"></video>
+</div>
+
+<div id="box-container">
+  <model-viewer id="gift-3d" src="model.glb" auto-rotate animation-name="Open" shadow-intensity="1" style="width: 100%; height: 100%;"></model-viewer>
+</div>
+
+<div class="photo-stack" id="p-stack">
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img1.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img2.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img3.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img4.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img5.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img6.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img7.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img8.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper"><div class="photo-card" style="background-image:url('img9.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+  <div class="photo-wrapper active-wrapper"><div class="photo-card" style="background-image:url('img10.jpg')"><div class="view-btn">👁</div></div><div class="allah-text">MARJOOOOON</div></div>
+</div>
+
+<div id="final-msg">Vdni tashlab qoyish esdan chiqmasin 😚☺<br><span style="font-size:16px; color:white; font-weight:normal;">(Qayta ko'rish uchun bosing)</span></div>
+<div class="status" id="hint">SOVG'ANI TUTING! 📦</div>
+
+<script>
+const bgMusic = document.getElementById('bg-music');
+const clickSound = document.getElementById('click-sound');
+const box = document.getElementById('box-container');
+const pStack = document.getElementById('p-stack');
+const finalMsg = document.getElementById('final-msg');
+const videos = document.querySelectorAll('video');
+
+let caught = false;
+let bx = Math.random() * (window.innerWidth - 140);
+let by = Math.random() * (window.innerHeight - 140);
+let bdx = 10, bdy = 10;
+
+function explosion(x, y) {
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.innerHTML = Math.random() > 0.4 ? '😚' : '❤️';
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.setProperty('--x', (Math.random() - 0.5) * 400 + 'px');
+    p.style.setProperty('--y', (Math.random() - 0.5) * 400 + 'px');
+    p.style.setProperty('--r', Math.random() * 360 + 'deg');
+    fragment.appendChild(p);
+    setTimeout(() => p.remove(), 1200);
+  }
+  document.body.appendChild(fragment);
+}
+
+function move() {
+  if (caught) return;
+  bx += bdx; by += bdy;
+  if (bx + 140 > window.innerWidth || bx < 0) bdx *= -1;
+  if (by + 140 > window.innerHeight || by < 0) bdy *= -1;
+  box.style.left = bx + 'px'; box.style.top = by + 'px';
+  requestAnimationFrame(move);
+}
+
+window.onload = () => { move(); };
+
+document.body.onclick = function(e) {
+  bgMusic.volume = 1.0;
+  bgMusic.play().catch(e => console.log("Audio kutishda"));
+  videos.forEach(v => v.play().catch(e => console.log("Video kutishda")));
+
+  clickSound.currentTime = 0;
+  clickSound.play().catch(() => {});
+  explosion(e.clientX, e.clientY);
+
+  document.body.onclick = (ev) => {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(() => {});
+    explosion(ev.clientX, ev.clientY);
+  };
+};
+
+box.onclick = (e) => {
+  e.stopPropagation();
+  caught = true;
+  box.style.transition = "0.7s all cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+  box.style.left = "50%"; box.style.top = "50%";
+  box.style.transform = "translate(-50%, -50%) scale(2)";
+  document.getElementById('gift-3d').play();
+
+  setTimeout(() => {
+    box.style.opacity = "0";
+    pStack.style.display = "block";
+    document.getElementById('hint').style.display = "none";
+    setTimeout(() => box.style.display = "none", 500);
+  }, 1000);
+};
+
+pStack.onclick = (e) => {
+  e.stopPropagation();
+  const wrappers = Array.from(pStack.querySelectorAll('.photo-wrapper:not(.fly)'));
+  if (wrappers.length === 0) return;
+
+  const topWrapper = wrappers[wrappers.length - 1];
+  explosion(e.clientX, e.clientY);
+
+  if (e.target.classList.contains('view-btn')) {
+    topWrapper.classList.toggle('zoom-active');
+    return;
+  }
+
+  if (!topWrapper.classList.contains('zoom-active')) {
+    topWrapper.classList.add('fly');
+    topWrapper.classList.remove('active-wrapper');
+
+    if (wrappers.length > 1) {
+      wrappers[wrappers.length - 2].classList.add('active-wrapper');
+    } else {
+      setTimeout(() => {
+        pStack.style.display = 'none';
+        finalMsg.style.display = 'block';
+      }, 800);
+    }
+  }
+};
+
+finalMsg.onclick = (e) => {
+  e.stopPropagation();
+  finalMsg.style.display = 'none';
+  const allWrappers = pStack.querySelectorAll('.photo-wrapper');
+  allWrappers.forEach((p, i) => {
+    p.classList.remove('fly', 'zoom-active', 'active-wrapper');
+    if (i === allWrappers.length - 1) p.classList.add('active-wrapper');
+  });
+  pStack.style.display = 'block';
+};
+</script>
+
+</body>
+</html>
