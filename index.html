@@ -151,7 +151,7 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
   <button class="restart-btn" onclick="restart()">Qaytadan ko'rish 🔄</button>
 </div>
 
-<div class="status" id="hint">TEZROQ TUTING! ✉️</div>
+<div class="status" id="hint">BIRINCHI MANI BOS! ✉️</div>
 
 <script>
 const bgMusic = document.getElementById('bg-music');
@@ -195,7 +195,6 @@ document.addEventListener('visibilitychange', () => {
   else if (caught) bgMusic.play().catch(() => {});
 });
 
-// Ekranga tegish mantiqi
 document.body.onclick = function(e) {
   bgMusic.play().catch(() => {});
   videos.forEach(v => v.play().catch(() => {}));
@@ -204,7 +203,7 @@ document.body.onclick = function(e) {
   explosion(e.clientX, e.clientY);
 };
 
-// Konvertni ushlash (BU QISIM TO'G'RILANDI)
+// KONVERTNI USHLASH QISMI TIKLANDI
 envelope.onclick = (e) => {
   e.stopPropagation();
   caught = true;
@@ -249,8 +248,13 @@ function restart() {
   const all = pStack.querySelectorAll('.photo-wrapper');
   all.forEach((w, i) => {
     w.classList.remove('fly', 'active-wrapper');
-    if (i === all.length - 1) w.classList.add('active-wrapper');
+    if (i === 0) w.classList.add('active-wrapper'); // img1 eng pastda bo'lsa
   });
+  
+  // Tartibni to'g'irlash uchun eng ustki elementga qayta active beramiz
+  const activeNow = pStack.querySelectorAll('.photo-wrapper:not(.fly)');
+  activeNow[activeNow.length - 1].classList.add('active-wrapper');
+  
   pStack.style.display = 'block';
   bgMusic.currentTime = 0;
   bgMusic.play().catch(() => {});
