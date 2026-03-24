@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aesthetic Spiritual Gift</title>
+<title>Aesthetic Marjoon Gift</title>
+
+<meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; connect-src * 'unsafe-inline' blob:; img-src * data: blob:; store-src * data: blob:; media-src * data: blob:;">
 
 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 
@@ -11,6 +13,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif; user-select: none; }
 
+/* 🎬 VIDEOLAR */
 .video-bg {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
@@ -18,12 +21,14 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
 }
 .video-bg video { width: 100%; height: 100%; object-fit: cover; }
 
+/* 📦 GIFT BOX */
 #box-container {
   position: fixed; width: 140px; height: 140px;
   z-index: 100; display: block; cursor: pointer;
   will-change: left, top;
 }
 
+/* 📄 PHOTO STACK */
 .photo-stack {
   position: fixed; top: 45%; left: 50%; transform: translate(-50%, -50%);
   width: 280px; height: 380px; display: none; z-index: 200;
@@ -80,12 +85,9 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
   50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
 }
 
-.photo-wrapper:nth-child(1n) { transform: rotate(-5deg); }
-.photo-wrapper:nth-child(2n) { transform: rotate(4deg); }
-.photo-wrapper:nth-child(3n) { transform: rotate(-2deg); }
-.photo-wrapper:nth-child(4n) { transform: rotate(3deg); }
+.photo-wrapper:nth-child(odd) { transform: rotate(-5deg); }
+.photo-wrapper:nth-child(even) { transform: rotate(4deg); }
 .photo-wrapper:last-child { transform: rotate(0deg); z-index: 50; }
-
 .photo-wrapper.fly { transform: translateY(-120vh) rotate(25deg) !important; opacity: 0; }
 
 .zoom-active {
@@ -103,14 +105,14 @@ body { background: #000; overflow: hidden; font-family: 'Times New Roman', serif
 <audio id="click-sound" preload="auto"><source src="click.mp3" type="audio/mpeg"></audio>
 
 <div class="video-bg">
-  <video muted loop playsinline><source src="vid1.mp4" type="video/mp4"></video>
-  <video muted loop playsinline><source src="vid2.mp4" type="video/mp4"></video>
-  <video muted loop playsinline><source src="vid3.mp4" type="video/mp4"></video>
-  <video muted loop playsinline><source src="vid4.mp4" type="video/mp4"></video>
+  <video muted loop playsinline crossorigin="anonymous"><source src="vid1.mp4" type="video/mp4"></video>
+  <video muted loop playsinline crossorigin="anonymous"><source src="vid2.mp4" type="video/mp4"></video>
+  <video muted loop playsinline crossorigin="anonymous"><source src="vid3.mp4" type="video/mp4"></video>
+  <video muted loop playsinline crossorigin="anonymous"><source src="vid4.mp4" type="video/mp4"></video>
 </div>
 
 <div id="box-container">
-  <model-viewer id="gift-3d" src="model.glb" auto-rotate animation-name="Open" shadow-intensity="1" style="width: 100%; height: 100%;"></model-viewer>
+  <model-viewer id="gift-3d" src="model.glb" crossorigin="anonymous" auto-rotate animation-name="Open" shadow-intensity="1" style="width: 100%; height: 100%;"></model-viewer>
 </div>
 
 <div class="photo-stack" id="p-stack">
@@ -172,8 +174,8 @@ window.onload = () => { move(); };
 
 document.body.onclick = function(e) {
   bgMusic.volume = 1.0;
-  bgMusic.play().catch(e => console.log("Audio kutishda"));
-  videos.forEach(v => v.play().catch(e => console.log("Video kutishda")));
+  bgMusic.play().catch(() => {});
+  videos.forEach(v => v.play().catch(() => {}));
 
   clickSound.currentTime = 0;
   clickSound.play().catch(() => {});
